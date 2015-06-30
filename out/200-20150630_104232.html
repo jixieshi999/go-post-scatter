@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+
+  <link rel="stylesheet" href="../config/stylesheets/stylesheet.css" media="screen"/>
+
+  <link rel="stylesheet" href="../config/stylesheets/pygment_trac.css"/>
+
+  <script class="jquery library" src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+
+  <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+
+  <title>timescatter</title>
+
+
+
+
+
+  </head>
+
+<body>
+
+    <div class='content'>
+
+    <header>
+
+      <h1 class="title">
+
+	</h1>
+
+      <h1 class="title">timescatter</h1>
+
+    </header>
+
+    <div id="main" style="height:500px;"></div>
+
+    <header>
+
+      <h1 class="title">timescatter</h1>
+
+    </header>
+
+    <div id="sender" style="height:500px;"></div>
+
+			
+
+  <script type="text/javascript">
+
+/*	$(".selector1").change(function(){
+
+
+
+     // 先清空第二个
+
+	var selecteditem=$(".selector1").val();
+
+	myFunction(0,"main",selecteditem);
+
+	myFunction(2,"sender",selecteditem);
+
+	//alert($(".selector1").val());
+
+
+
+});*/
+
+	myFunction(0,"main",7);
+
+	//myFunction(2,"sender",7);
+
+	function myFunction(inputtype,layout,days)
+
+	{
+
+        var aaa=30;
+
+        require.config({
+
+            paths: {
+
+                echarts: 'http://echarts.baidu.com/build/dist'
+
+            },
+
+            packages: [
+
+                {
+
+                    name: 'echarts',
+
+                    location: '../../src',
+
+                    main: 'echarts'
+
+                },
+
+                {
+
+                    name: 'zrender',
+
+                    location: 'http://ecomfe.github.io/zrender/src',
+
+                    //location: '../../../zrender/src',
+
+                    main: 'zrender'
+
+                }
+
+            ]
+
+        });
+
+        var myChart ;
+
+        require(
+
+            [
+
+                'echarts',
+
+                'echarts/chart/line',
+
+                'echarts/chart/bar',
+
+                'echarts/chart/scatter'
+
+            ],
+
+            function (ec) {
+
+				
+
+				var option = {
+
+
+
+						title : {
+
+
+
+							text: 'timescatter',
+
+
+
+							subtext: 'timescatter'
+
+
+
+						},
+
+
+
+						tooltip : {
+
+
+
+							trigger: 'axis',
+
+
+
+							showDelay : 0,
+
+
+
+							formatter : function (params) {
+
+
+
+								if (params.value.length > 1) {
+
+
+
+									return params.seriesName + ' :<br/>'
+
+
+
+									   + params.value[0] + ' ' 
+
+
+
+									   + params.value[1] + 'ms ';
+
+
+
+								}
+
+
+
+								else {
+
+
+
+									return params.seriesName + ' :<br/>'
+
+
+
+									   + params.name + ' : '
+
+
+
+									   + params.value + 'ms ';
+
+
+
+								}
+
+
+
+							},  
+
+
+
+							axisPointer:{
+
+
+
+								show: true,
+
+
+
+								type : 'cross',
+
+
+
+								lineStyle: {
+
+
+
+									type : 'dashed',
+
+
+
+									width : 1
+
+
+
+								}
+
+
+
+							}
+
+
+
+						},
+
+
+
+						legend: {
+
+
+
+							data:['time']
+
+
+
+						},
+
+
+
+						toolbox: {
+
+
+
+							show : true,
+
+
+
+							feature : {
+
+
+
+								mark : {show: true},
+
+
+
+								dataZoom : {show: true},
+
+
+
+								dataView : {show: true, readOnly: false},
+
+
+
+								restore : {show: true},
+
+
+
+								saveAsImage : {show: true}
+
+
+
+							}
+
+
+
+						},
+
+
+
+						xAxis : [
+
+
+
+							{
+
+
+
+								type : 'value',
+
+
+
+								scale:true,
+
+
+
+								axisLabel : {
+
+
+
+									formatter: '{value} '
+
+
+
+								}
+
+
+
+							}
+
+
+
+						],
+
+
+
+						yAxis : [
+
+
+
+							{
+
+
+
+								type : 'value',
+
+
+
+								scale:true,
+
+
+
+								axisLabel : {
+
+
+
+									formatter: '{value} ms'
+
+
+
+								}
+
+
+
+							}
+
+
+
+						],
+
+
+
+						series : [
+
+
+
+							{
+
+
+
+								name:'time',
+
+
+
+								type:'scatter',
+
+
+
+								data:[[2,4893],[4,6571],[4,7579],[31,7563],[32,7580],[4,8092],[3,8155],[4,8163],[3,11868],[4,12534],[7,12569],[4,12608],[3,12667],[4,12777],[3,12888],[4,12949],[31,12922],[3,12962],[2,13010],[4,13037],[6,13170],[4,13178],[32,13151],[6,13201],[4,13262],[4,13275],[3,13294],[32,13377],[4,13414],[3,13416],[2,13435],[3,13477],[7,13611],[5,13848],[2,14016],[3,14023],[2,14067],[2,14131],[32,14110],[3,14163],[4,14165],[4,14167],[4,14171],[32,14159],[3,14197],[3,14201],[4,14207],[4,14210],[2,14225],[32,14215],[3,14247],[4,14258],[3,14262],[3,14265],[31,14365],[3,14398],[32,14372],[2,14406],[6,14413],[4,14431],[7,14431],[4,14438],[4,14484],[32,14460],[32,14584],[31,14591],[4,14743],[4,14767],[4,14768],[31,14751],[31,14763],[4,14809],[7,14809],[31,14796],[3,14842],[7,14853],[4,14864],[3,14875],[32,14853],[7,14896],[32,14874],[3,14945],[3,14950],[3,14962],[31,14939],[3,14987],[4,14993],[2,14997],[32,14976],[7,15014],[2,15036],[31,15010],[4,15046],[32,15027],[3,15066],[31,15039],[31,15099],[6,15127],[4,15132],[32,15113],[4,15203],[4,15205],[2,15211],[2,15216],[32,15196],[4,15228],[4,15239],[4,15244],[3,15250],[4,15258],[3,15265],[3,15284],[4,15292],[31,15270],[7,15304],[2,15319],[32,15309],[2,15341],[31,15317],[5,15349],[3,15360],[32,15351],[6,15381],[3,15403],[3,15408],[32,15383],[32,15399],[4,15435],[5,15446],[3,15455],[32,15429],[4,15460],[3,15465],[7,15464],[3,15473],[6,15473],[32,15450],[2,15486],[3,15490],[3,15500],[4,15504],[4,15508],[2,15513],[32,15491],[32,15494],[4,15524],[31,15505],[3,15536],[6,15539],[6,15541],[2,15547],[31,15520],[6,15548],[6,15550],[32,15526],[7,15553],[2,15560],[4,15560],[7,15559],[31,15537],[5,15565],[3,15569],[4,15569],[32,15544],[7,15571],[32,15548],[7,15575],[3,15581],[31,15557],[31,15565],[2,15597],[2,15599],[4,15606],[3,15615],[4,15617],[31,15593],[3,15628],[3,15631],[2,15637],[5,15638],[3,15644],[31,15620],[6,15679],[31,15656],[4,15686],[2,15693],[4,15706],[4,15708],[3,15710],[7,15710],[3,15716],[5,15720],[4,15727],[32,15704],[4,15734],[3,15738],[6,15741],[32,15716],[3,15751],[3,15760]],
+
+
+
+								markPoint : {
+
+
+
+									data : [
+
+
+
+										{type : 'max', name: '最大值'},
+
+
+
+										{type : 'min', name: '最小值'}
+
+
+
+									]
+
+
+
+								},
+
+
+
+								markLine : {
+
+
+
+									data : [
+
+
+
+										{type : 'average', name: '平均值'}
+
+
+
+									]
+
+
+
+								}
+
+
+
+							}
+
+
+
+						]
+
+
+
+					};
+
+
+
+
+
+
+
+				myChart = ec.init(document.getElementById(layout));
+
+				myChart.setOption(option);
+
+            }
+
+        );
+
+	}
+
+  </script>
+
+</body>
+
+</html>
+

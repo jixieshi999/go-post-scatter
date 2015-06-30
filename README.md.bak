@@ -4,8 +4,6 @@
 ###
 	运行Client生成并发报表 分析基本每次连接执行时间
 
-	
-
 	out 输出目录
 	config 配置目录
 
@@ -13,11 +11,5 @@
 	修改config文件夹里面的config/output.html里面需要替换的内容 用%s代替
 
 
-##修改扩展
-	由于连接的是自己的golang服务器，
-	需要修改链接的服务器地址，
-	和修改代码里面http传输的内容修改才能实现
-	修改getPostUploadResData方法
-	修改postLoginTest登录测试
 
 

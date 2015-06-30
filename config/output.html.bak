@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+  <link rel="stylesheet" href="../config/stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="../config/stylesheets/pygment_trac.css"/>
+  <script class="jquery library" src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+  <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+  <title>timescatter</title>
+
+
+  </head>
+<body>
+    <div class='content'>
+    <header>
+      <h1 class="title">
+	</h1>
+      <h1 class="title">timescatter</h1>
+    </header>
+    <div id="main" style="height:500px;"></div>
+    <header>
+      <h1 class="title">timescatter</h1>
+    </header>
+    <div id="sender" style="height:500px;"></div>
+			
+  <script type="text/javascript">
+/*	$(".selector1").change(function(){
+
+     // 先清空第二个
+	var selecteditem=$(".selector1").val();
+	myFunction(0,"main",selecteditem);
+	myFunction(2,"sender",selecteditem);
+	//alert($(".selector1").val());
+
+});*/
+	myFunction(0,"main",7);
+	//myFunction(2,"sender",7);
+	function myFunction(inputtype,layout,days)
+	{
+        var aaa=30;
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            },
+            packages: [
+                {
+                    name: 'echarts',
+                    location: '../../src',
+                    main: 'echarts'
+                },
+                {
+                    name: 'zrender',
+                    location: 'http://ecomfe.github.io/zrender/src',
+                    //location: '../../../zrender/src',
+                    main: 'zrender'
+                }
+            ]
+        });
+        var myChart ;
+        require(
+            [
+                'echarts',
+                'echarts/chart/line',
+                'echarts/chart/bar',
+                'echarts/chart/scatter'
+            ],
+            function (ec) {
+				
+				var option = {
+
+						title : {
+
+							text: 'timescatter',
+
+							subtext: 'timescatter'
+
+						},
+
+						tooltip : {
+
+							trigger: 'axis',
+
+							showDelay : 0,
+
+							formatter : function (params) {
+
+								if (params.value.length > 1) {
+
+									return params.seriesName + ' :<br/>'
+
+									   + params.value[0] + ' ' 
+
+									   + params.value[1] + 'ms ';
+
+								}
+
+								else {
+
+									return params.seriesName + ' :<br/>'
+
+									   + params.name + ' : '
+
+									   + params.value + 'ms ';
+
+								}
+
+							},  
+
+							axisPointer:{
+
+								show: true,
+
+								type : 'cross',
+
+								lineStyle: {
+
+									type : 'dashed',
+
+									width : 1
+
+								}
+
+							}
+
+						},
+
+						legend: {
+
+							data:['time']
+
+						},
+
+						toolbox: {
+
+							show : true,
+
+							feature : {
+
+								mark : {show: true},
+
+								dataZoom : {show: true},
+
+								dataView : {show: true, readOnly: false},
+
+								restore : {show: true},
+
+								saveAsImage : {show: true}
+
+							}
+
+						},
+
+						xAxis : [
+
+							{
+
+								type : 'value',
+
+								scale:true,
+
+								axisLabel : {
+
+									formatter: '{value}, '
+
+								}
+
+							}
+
+						],
+
+						yAxis : [
+
+							{
+
+								type : 'value',
+
+								scale:true,
+
+								axisLabel : {
+
+									formatter: '{value} ms'
+
+								}
+
+							}
+
+						],
+
+						series : [
+
+							{
+
+								name:'time',
+
+								type:'scatter',
+
+								data:%s,
+
+								markPoint : {
+
+									data : [
+
+										{type : 'max', name: '最大值'},
+
+										{type : 'min', name: '最小值'}
+
+									]
+
+								},
+
+								markLine : {
+
+									data : [
+
+										{type : 'average', name: '平均值'}
+
+									]
+
+								}
+
+							}
+
+						]
+
+					};
+
+
+
+				myChart = ec.init(document.getElementById(layout));
+				myChart.setOption(option);
+            }
+        );
+	}
+  </script>
+</body>
+</html>
